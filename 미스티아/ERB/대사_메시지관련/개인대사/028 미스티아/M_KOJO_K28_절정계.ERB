@@ -1,0 +1,505 @@
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;분기 작성에 유용할 것 같은 변수 등의 메모
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;NOWEX:C절정 NOWEX:V절정 NOWEX:B절정 NOWEX:A절정 NOWEX:M절정
+;각 부위의 절정 강도. 먼저 0~3이 배정되고、다중절정에 의해 최대 16배된다. 즉 단일부위라면 최대3, 5중절정으로 최대 48
+;NOWEX:TotalEX
+;다중 절정 보정을 받기 전의 각 부위 절정 강도의 합계값. 1~15. 이 템플릿의 분기 기준.
+
+;TEQUIP:50
+;V에 누구의 장대가 들어있는지. TEQUIP:50 = MASTER로 아나타가 삽입중이 된다.
+;TEQUIP:51
+;A에 누구의 장대가 들어있는지. TEQUIP:51 = MASTER로 아나타가 삽입중이 된다.
+;NOWEX:사정
+;사정량, 최대3. 예를 들어 IF NOWEX:MASTER:사정 > 1이면, 아나타가 대량사정 이상을 한 경우가 된다。
+;SYNCED_ORGASM(TARGET)
+;상대와 아나타가 동시에 절정할 경우 참이 된다. 절정의 부위는 불문한다.
+
+;-------------------------------------------------
+;절정시의 구상
+;-------------------------------------------------
+@M_KOJO_MESSAGE_PALAMCNG_B_K28
+#DIM TotalEX
+CALL PALAM_MESSAGE_B
+;-------------------------------------------------
+;분유
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL && NOWEX:분유
+	PRINTFORMW 
+ENDIF
+;-------------------------------------------------
+;사정했다
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL && NOWEX:사정
+	PRINTFORMW 
+ENDIF
+;-------------------------------------------------
+;방뇨
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL && NOWEX:방뇨
+	PRINTFORMW 
+ENDIF
+;-------------------------------------------------
+;절정
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+;합계 절정수로 분기
+;이것만으로는 어느 부위가 절정했는지 구분되지 않기 때문에, 나누어 쓰고 싶다면 임의로 분기를 가필해 주세요.
+IF LOCAL
+	SELECTCASE NOWEX:TotalEX
+		;강
+		CASE 5 TO 15
+			PRINTFORMW 
+		;중
+		CASE 2 TO 4
+			PRINTFORMW 
+		;약
+		CASE 1
+			PRINTFORMW 
+	ENDSELECT
+ENDIF
+
+;-------------------------------------------------
+;노예의 수면절정시의 구상
+;-------------------------------------------------
+@M_KOJO_MESSAGE_PALAMCNG_B2_K28
+CALL PALAM_MESSAGE_B
+;-------------------------------------------------
+;수면분유
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL && NOWEX:분유
+	PRINTFORMW 
+ENDIF
+;-------------------------------------------------
+;수면사정했다
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL && NOWEX:사정
+	PRINTFORMW 
+ENDIF
+;-------------------------------------------------
+;수면방뇨
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL && NOWEX:방뇨
+	PRINTFORMW 
+ENDIF
+;-------------------------------------------------
+;수면절정
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+;합계 절정수로 분기
+;이것만으로는 어느 부위가 절정했는지 구분되지 않기 때문에, 나누어 쓰고 싶다면 임의로 분기를 가필해 주세요.
+IF LOCAL
+	SELECTCASE NOWEX:TotalEX
+		;강
+		CASE 5 TO 15
+			PRINTFORMW 
+		;중
+		CASE 2 TO 4
+			PRINTFORMW 
+		;약
+		CASE 1
+			PRINTFORMW 
+	ENDSELECT
+ENDIF
+
+
+;-------------------------------------------------
+;아나타가 사정했을 때에 관한 구상의 표시
+;일시적으로 TARGET을 구상주로 설정하고 있다
+;-------------------------------------------------
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_00(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;TARGET의 손에 의한 사정으로, 사정 대상이 TARGET이 아니다
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_0(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;콘돔
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_23(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;이라마치오
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_22(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;식스나인
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;동시사정
+	IF NOWEX:사정 && NOWEX:MASTER:사정
+		PRINTFORMW
+		RETURN 1
+	;TARGET만 사정
+	ELSEIF NOWEX:사정
+		;PLAYER에게 붙어있다
+		IF GETBIT(TALENT:PLAYER:성별,1)
+			PRINTFORMW
+			RETURN 1
+		;붙어있지 않다
+		ELSE
+			PRINTFORMW
+			RETURN 1
+		ENDIF
+	;PLAYER만 사정
+	ELSE
+		;TARGET에게 붙어있다
+		IF GETBIT(TALENT:성별,1)
+			PRINTFORMW
+			RETURN 1
+		;붙어있지 않다
+		ELSE
+			PRINTFORMW
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_26(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;수유플레이
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_21(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;파이즈리펠라
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_20(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;수음 펠라
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_9(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;애널봉사
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_8(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;거품춤
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	;동시사정
+	IF NOWEX:사정 && NOWEX:MASTER:사정
+		PRINTFORMW
+		RETURN 1
+	;TARGET만 사정
+	ELSEIF NOWEX:사정
+		;PLAYER에게 붙어있다
+		IF GETBIT(TALENT:PLAYER:성별,1)
+			PRINTFORMW
+			RETURN 1
+		;붙어있지 않다
+		ELSE
+			PRINTFORMW
+			RETURN 1
+		ENDIF
+	;PLAYER만 사정
+	ELSE
+		;TARGET에게 붙어있다
+		IF GETBIT(TALENT:성별,1)
+			PRINTFORMW
+			RETURN 1
+		;붙어있지 않다
+		ELSE
+			PRINTFORMW
+			RETURN 1
+		ENDIF
+	ENDIF
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_7(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;풋잡
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_6(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;스마타
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_5(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;파이즈리
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_4(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;フェラチオ
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_3(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;수음
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_2(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;애널
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A_K28_1(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;질내
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+;-------------------------------------------------
+;면간(眠姦)사정에 관한 구상의 표시
+;일시적으로 TARGET을 구상주로 설정하고 있다
+;-------------------------------------------------
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K28_0(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;콘돔
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K28_23(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;이라마치오
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K28_7(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;풋잡
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K28_5(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;파이즈리
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K28_4(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;フェラチオ
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K28_3(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;수음
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K28_2(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;애널
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+@M_KOJO_MESSAGE_PALAMCNG_A2_K28_1(ARG)
+CALL PALAM_MESSAGE_A
+;-------------------------------------------------
+;질내
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
+
+
+@M_KOJO_MESSAGE_PALAMCNG_F_K28(ARG)
+CALL PALAM_MESSAGE_F
+;-------------------------------------------------
+;애태우기
+;기입체크 (=0, 비표시、1, 표시)
+LOCAL = 0
+;-------------------------------------------------
+IF LOCAL
+	PRINTFORMW 
+	RETURN 1
+ENDIF
+RETURN 1
