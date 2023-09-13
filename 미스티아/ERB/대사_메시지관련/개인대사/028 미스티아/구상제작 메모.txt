@@ -1,0 +1,39 @@
+PRINTFORML 구상색O
+PRINTFORMDL 구상색
+L == 한번 멈추는것
+W == 안멈추고 가는거
+
+
+	기본적으로 반말
+	상냥한 성격
+	연모때부터 슬슬 대시하다
+	연인 되면 직구로 던지게 만들예정
+	
+	시간날때마다 작업하는거라
+	문장의 통일성같은게 없을 수 있음
+
+	지문 끝낼때 마침표 넣기!!!
+
+		구상색O		구상색X
+		ML		|	MDL		논스톱
+		MW		|	MDW		브레이크
+
+	IF TALENT == 연인
+		PRINTFORMW 「」
+	ELSEIF TALENT == 연모
+		PRINTFORMW 「」
+	ELSEIF TALENT == 사모
+		PRINTFORMW 「」
+   ELSEIF CFLAG:2 >= 251
+       PRINTFORMW 「」
+	ELSE
+		PRINTFORMW 「」
+	ENDIF
+
+조사처리 이름
+%마스터는%
+%마스터가%
+%마스터의%
+등등
+이름호출
+ %CALLNAME:MASTER%
