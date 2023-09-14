@@ -652,15 +652,15 @@ LOCAL = 1
 ;-------------
 
 IF LOCAL
-	IF TALENT == 연인
+	IF TALENT:연인
 		PRINTFORML 「앗...연인끼리니깐 이대로 있어도 상관없지?」
 		PRINTFORMDW 미스티아는 %마스터와% 거리를 두려다 말았다
 		RETURN 1
-	ELSEIF TALENT == 연모
+	ELSEIF TALENT:연모
 		PRINTFORML 「좀더 이렇게있는건...역시 안될려나♪」
 		PRINTFORMDW 미스티아는 불만스러운 표정으로 %마스터와% 살며시 거리를 두었다
 		RETURN 1
-	ELSEIF TALENT == 사모
+	ELSEIF TALENT:사모
 		PRINTFORML 「다른사람이 들어왔으니 떨어지는편이 나을려나♪」
 		PRINTFORMDW 미스티아는 약간 아쉬운 기색으로 %마스터와% 살며시 거리를 두었다
 		RETURN 1

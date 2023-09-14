@@ -24,10 +24,74 @@ RETURN RESULT
 @M_KOJO_MESSAGE_COM_K28_300_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
-LOCAL = 0
-;-------------------------------------------------
+LOCAL = 1
+;-------------------------------------------------ㄷ
 IF LOCAL
-	;여기에 구상을 기입해주세요
+	;회화 첫 회
+	IF FIRSTTIME(SELECTCOM)
+		PRINTFORMW 「회화 첫시행 테스트용 텍스트」
+	ELSEIF TFLAG:192 <= -1 ;대화 실패
+		LOCAL = RAND:3
+		IF LOCAL == 0
+			PRINTFORMW 「～～♪ ～♪」
+			PRINTFORMW 「어? 미안 뭐라 했었어?」
+			PRINTFORMDL 아무래도 노래를 흥얼거리느라 못들은것같다.
+		ELSEIF LOCAL == 1
+			PRINTFORMW 「어... 그러니까...」
+			PRINTFORMW 「좋은 날씨네..?」
+			PRINTFORMDL 대화가 맞물리지 않고있다...
+		ELSE
+			PRINTFORMW 「아, 그러고보니...」
+			PRINTFORMDL 미스티아는 어색해져서 화제를 바꿨다.
+		ENDIF
+	ELSEIF TALENT:연인
+		LOCAL = RAND:5
+		IF LOCAL == 0
+			PRINTFORMW 「」
+		ELSEIF LOCAL == 1
+		ELSEIF LOCAL == 2
+		ELSEIF LOCAL == 3
+		ELSE
+		ENDIF
+	ELSEIF TALENT:연모
+		LOCAL = RAND:5
+		IF LOCAL == 0
+		ELSEIF LOCAL == 1
+		ELSEIF LOCAL == 2
+		ELSEIF LOCAL == 3
+		ELSE
+		ENDIF
+	ELSEIF TALENT:사모
+		LOCAL = RAND:5
+		IF LOCAL == 0
+		ELSEIF LOCAL == 1
+		ELSEIF LOCAL == 2
+		ELSEIF LOCAL == 3
+		ELSE
+		ENDIF
+	ELSEIF CFLAG:2 >= 251;호감도 높음
+		LOCAL = RAND:5
+		IF LOCAL == 0
+			PRINTFORMW 「그런데 %마스터는%」
+		ELSEIF LOCAL == 1
+		ELSEIF LOCAL == 2
+		ELSEIF LOCAL == 3
+		ELSE
+		ENDIF
+	ELSE
+		LOCAL = RAND:5;기본
+		IF LOCAL == 0
+			PRINTFORMW 「」
+		ELSEIF LOCAL == 1
+			PRINTFORMW 「」
+		ELSEIF LOCAL == 2
+			PRINTFORMW 「」
+		ELSEIF LOCAL == 3
+			PRINTFORMW 「」
+		ELSE
+			PRINTFORMW 「」
+		ENDIF
+	ENDIF
 ENDIF
 RETURN 1
 ;==================================================
@@ -621,59 +685,6 @@ IF LOCAL
 
 ENDIF
 RETURN 1
-
-;==================================================
-;363,읽어준다 ([유치]소유 전용)
-;TFLAG:193 (1=대성공 0=성공 -1=실패)(지문 분기 없음)
-;CFLAG:동침중 (1=이불or침대 속에서 책을 읽음)
-;MASTER가 TARGET보다 더 큰 체격일 경우, 무릎 위에 TARGET를 올려주는
-;==================================================
-@M_KOJO_SUCCESS_COM_K28_363
-;성공실패 판정
-;TFLAG:192 (-2=커맨드 종료, -1＝강제실패, 0=COM의존, 1=강제성공or대성공)
-TFLAG:192 =0
-
-@M_KOJO_MESSAGE_COM_K28_363
-CALL TRAIN_MESSAGE
-CALL M_KOJO_MESSAGE_COM_K28_363_1
-RETURN RESULT
-
-@M_KOJO_MESSAGE_COM_K28_363_1
-;-------------------------------------------------
-;기입체크 (=0, 비표시、1, 표시)
-LOCAL = 0
-;-------------------------------------------------
-IF LOCAL
-
-ENDIF
-RETURN 1
-;==================================================
-;364,콩뿌리기 (스이카, 유우기, 스칼렛자매용)
-;TFLAG:193 (콩뿌리기에 참여하는 인원)
-;==================================================
-@M_KOJO_MESSAGE_COM_K28_364
-CALL TRAIN_MESSAGE
-CALL M_KOJO_MESSAGE_COM_K28_364_1
-RETURN RESULT
-
-@M_KOJO_MESSAGE_COM_K28_364_1
-;-------------------------------------------------
-;기입체크 (=0, 비표시、1, 표시)
-LOCAL = 0
-;-------------------------------------------------
-IF LOCAL
-
-ENDIF
-RETURN 1
-;==================================================
-;365,모리야신사로 이동 (사나에、카나코、스와코용)
-;==================================================
-@M_KOJO_MESSAGE_COM_K28_365
-CALL TRAIN_MESSAGE
-CALL M_KOJO_MESSAGE_COM_K28_365_1
-RETURN RESULT
-
-@M_KOJO_MESSAGE_COM_K28_365_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
@@ -1099,23 +1110,6 @@ CALL M_KOJO_MESSAGE_COM_K28_441_1
 RETURN RESULT
 
 @M_KOJO_MESSAGE_COM_K28_441_1
-;-------------------------------------------------
-;기입체크 (=0, 비표시、1, 표시)
-LOCAL = 0
-;-------------------------------------------------
-IF LOCAL
-
-ENDIF
-RETURN 1
-;==================================================
-;442,벌채한다 (미실장)
-;==================================================
-@M_KOJO_MESSAGE_COM_K28_442
-CALL TRAIN_MESSAGE
-CALL M_KOJO_MESSAGE_COM_K28_442_1
-RETURN RESULT
-
-@M_KOJO_MESSAGE_COM_K28_442_1
 ;-------------------------------------------------
 ;기입체크 (=0, 비표시、1, 표시)
 LOCAL = 0
