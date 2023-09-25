@@ -1,7 +1,7 @@
 PRINTFORML 구상색O
 PRINTFORMDL 구상색
-L == 한번 멈추는것
-W == 안멈추고 가는거
+L == 논스톱
+W == 브레이크
 
 
 	기본적으로 반말

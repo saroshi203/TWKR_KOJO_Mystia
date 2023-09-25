@@ -16,7 +16,12 @@ TFLAG:192 =0
 @M_KOJO_MESSAGE_COM_K28_300
 ;커맨드 공통 메시지(TRAIN_MESSAGE) 
 ;삭제하면 「~이야기를 했다.」 이런 것들이 사라집니다. 또, 삭제했을 경우는 자동으로 구상색이 붙지 않습니다.
-CALL TRAIN_MESSAGE
+IF !(TCVAR:302 && !TALENT:연모 || CHK_DATENOW(CFLAG:TARGET:데이트중)) 
+	CALL TRAIN_MESSAGE
+ELSE
+	CALL TRAIN_MESSAGE
+ENDIF
+	;※회화 누적치가 반응을 일으키는 최소의 물리량을 넘은 실패, 데이트중 때 표시하지 않게 변경 나즈린구상에서 퍼옴
 ;구상메인호출
 CALL M_KOJO_MESSAGE_COM_K28_300_1
 RETURN RESULT
@@ -31,29 +36,58 @@ IF LOCAL
 	IF FIRSTTIME(SELECTCOM)
 		PRINTFORMW 「나랑 이야기를?」
 		PRINTFORMW 「무슨 이야기가 좋을까♪」
-	ELSEIF TFLAG:192 <= -1 ;대화 실패
+	ELSEIF TCVAR:302 && TALENT:연모
+		SELECTCASE RAND:3
+		CASE 0
+			PRINTFORML 「말할거리가 생각안나는거야?」
+			PRINTFORMW 「그렇게 쥐어짜지 않아도 괜찮아♪」
+		CASE 1
+			PRINTFORML 「더이상 말할거리가 없는걸려나?」
+			PRINTFORMW 「%마스터와% 잔뜩 이야기했으니 괜찮아♪」
+		CASE 2
+			PRINTFORML 「아, 그러고보니…」
+			PRINTFORMDW 미스티아는 어색해져서 화제를 바꿨다.
+		ENDSELECT
+	ELSEIF TCVAR:302||TFLAG:193 == -1 ;대화 실패
 		SELECTCASE RAND:6
 		CASE 0
-			PRINTFORMW 「～～♪ ～♪」
-			PRINTFORMW 「어? 미안 뭐라 했었어?」
-			PRINTFORMDL 아무래도 노래를 흥얼거리느라 못들은것같다.
+			PRINTFORML 「～～♪ ～♪」
+			PRINTFORML 「어? 미안 뭐라 했었어?」
+			PRINTFORMDW 아무래도 노래를 흥얼거리느라 못들은것같다.
 		CASE 1
-			PRINTFORMW 「어... 그러니까...」
-			PRINTFORMW 「좋은 날씨네..?」
-			PRINTFORMDL 대화가 맞물리지 않고있다...
+			PRINTFORML 「어… 그러니까…」
+			PRINTFORML 「좋은 날씨네..?」
+			PRINTFORMDW 대화가 맞물리지 않고있다…
 		CASE 2
-			PRINTFORMW 「아, 그러고보니...」
-			PRINTFORMDL 미스티아는 어색해져서 화제를 바꿨다.
+			PRINTFORML 「아, 그러고보니…」
+			PRINTFORMDW 미스티아는 어색해져서 화제를 바꿨다.
 		CASE 3
-			PRINTFORML (어색하네...)
+			PRINTFORMW (어색하네…)
 		CASE 4
-			PRINTFORML (뭔가 할 말이...)
+			PRINTFORMW (뭔가 할 말이…)
 		CASE 5
-			PRINTFORML (말할 거리 있던가...)
+			PRINTFORMW (말할 거리 있던가…)
 		ENDSELECT
 	ELSEIF TALENT:연인
 		SELECTCASE RAND:5
 		CASE 0
+			PRINTFORMW 미스티아에게 알을 낳냐고 질문해보았다.
+			IF CFLAG:911 == 1 && EXP:출산경험 <= 0
+				PRINTFORML 「일단 아기가 나온다고 알고있어♪」
+				PRINTFORMW 「그리고 배에서 딱딱한 느낌도 없으니 역시 아기일려나♪」
+			ELSEIF  EXP:출산경험 <= 0
+				PRINTFORML 「일단 아기가 나온다고 알고있긴 하지만…」
+				PRINTFORMW 「역시 직접 확인하는편이 좋지않을려나♪」
+			ELSE 
+				PRINTFORML 「또 나를 임신시키고 싶은걸까나♪」
+				IF TALENT:육아중
+					PRINTFORMW 「그치만 지금은 육아중이니깐 안돼♪」
+				ELSEIF CFLAG:911 == 1
+					PRINTFORMW 「라고하기엔 이미 임신중이지만♪」
+				ELSE
+					PRINTFORMW 「마침 육아도 끝났고 좋을지도♪」
+				ENDIF
+			ENDIF
 		CASE 1
 		CASE 2
 		CASE 3
@@ -62,6 +96,24 @@ IF LOCAL
 	ELSEIF TALENT:연모
 		SELECTCASE RAND:5
 		CASE 0
+			PRINTFORMDW 미스티아에게 알을 낳냐고 질문해보았다.
+			IF CFLAG:911 == 1 && EXP:출산경험 <= 0
+				PRINTFORML 「뭐… %마스터의%아이니깐 말은 해줘야지♪」
+				PRINTFORMW 「평범하게 아기가 나와♪」
+			ELSEIF  EXP:출산경험 <= 0
+				PRINTFORMW 「…」
+				PRINTFORML 「이정도면 말해줘도 될려나…」
+				PRINTFORMW 「어떤 답을 기대했는진 몰라도 아마도 아기쪽일껄?」
+			ELSE 
+				PRINTFORML 「아기 하나 더 만들자는 뜻이야?」
+				IF TALENT:육아중
+					PRINTFORMW 「그치만 지금은 육아중이니깐…」
+				ELSEIF CFLAG:911 == 1
+					PRINTFORMW 「라고하기엔 이미 임신중이지만♪」
+				ELSE
+					PRINTFORMW 「마침 육아도 끝났고…」
+				ENDIF
+			ENDIF
 		CASE 1
 		CASE 2
 		CASE 3
@@ -72,57 +124,117 @@ IF LOCAL
 		CASE 0
 			PRINTFORMW 「가게에 새로운 술이 들어왔는데, 마셔볼래?」
 		CASE 1
-			PRINTFORMW 「%마스터의%이야기는 재밌네~」
-			PRINTFORMDL 미스타아의 날개가 파닥파닥 거린다.
+			PRINTFORML 「%마스터의%이야기는 재밌네~」
+			PRINTFORMDW 미스타아의 날개가 파닥파닥 거린다.
 		CASE 2
+			PRINTFORMDW 미스티아에게 알을 낳냐고 질문해보았다.
+			IF CFLAG:911 == 1 && EXP:출산경험 <= 0;첫임신자각
+				PRINTFORML 「이미 벌어진일이니깐…」
+				PRINTFORMW 「어떤 답을 기대했는진 몰라도 아마도 아기쪽일껄?」
+			ELSEIF  EXP:출산경험 <= 0
+				PRINTFORMW 「…」
+				PRINTFORML 「비밀…」
+				PRINTFORMDW 미스티아는 새빨개진채로 말했다.
+			ELSE 
+				PRINTFORMW 「…」
+				PRINTFORMW 「다 알면서…」
+			ENDIF
 		CASE 3
+			PRINTFORML 「」
 		CASE 4
+			PRINTFORML 「」
 		ENDSELECT
-	ELSEIF CFLAG:2 >= 1000;호감도 높음
+	ELSEIF CFLAG:2 >= 750;호감도 높음
 		SELECTCASE RAND:5
 		CASE 0
+			PRINTFORMDW 미스티아에게 알을 낳냐고 질문해보았다.
+			PRINTFORML 「또 그 질문이야?」
+			PRINTFORMW 「…」
+			PRINTFORML 「알려줄리가 없잖아!」
+			PRINTFORMDW 미스티아는 부끄러워하며 말했다.
 		CASE 1
+			PRINTFORMDW 미스티아가 노래를 흥얼거리고있다.
+			PRINTFORML 「～～♪～♪」
+			PRINTFORML 「노래 부르는건 즐거워♪」
+			PRINTFORMW 「%CALLNAME:MASTER%도 같이 불러볼래?」
+			IF ABL:MASTER:음악기능 >= 3
+				PRINTFORMDW %마스터는% 미스티아와 같이 노래를 불렀다
+				EXP:MASTER:연주경험 += 5
+				EXP:28:연주경험 += 5
+			ELSE
+				PRINTFORMDL 음악은 그다지 특기가 아니여서 사양할게
+				PRINTFORMW 「그럼 내가 %마스터의% 몫까지 부를게♪」
+				EXP:28:연주경험 += 5
+			ENDIF
 		CASE 2
+			PRINTFORML 「%마스터는% 술 잘마셔?」
+			IF TALENT:MASTER:술내성 <= -1
+				PRINTFORMDW 술은 잘 못마셔
+				PRINTFORMW 「같이 마시고 싶었는데 아쉽네~」
+			ELSEIF TALENT:MASTER:술내성 >= 1
+				PRINTFORMDW 잘 마시는편이지
+				PRINTFORML 「그럼 같이 마실 수 있겠네~」
+				PRINTFORMW 「기대할게♪」
+			ELSE
+				PRINTFORMDL 보통이지
+				PRINTFORML 「그럼 적당히 조절해야할려나…」
+				PRINTFORMW 「나중에 같이 마시자♪」
+			ENDIF
 		CASE 3
+			PRINTFORML 「저번에 가게에서 일하고있더니 어디선가 엄청난 영압이 느껴져서 싫었어~」
+			PRINTFORMW 「또 그 망령이 나를 노리는건가…」
 		CASE 4
+			PRINTFORML 「나는 사실 원래 사람을 공격하는쪽의 요괴지만~」
+			PRINTFORMW 「%마스터와% 이야기하는게 즐거워서 %마스터와%는 친해지고싶네♪」
+			PRINTFORMDW 미스티아는 무서운소리를 아무렇지도 않게 하고있다.
 		ENDSELECT
 	ELSE
 		SELECTCASE RAND:5;기본
 		CASE 0
-			PRINTFORMW 「%마스터는%평소엔 뭘 하고 지내?」
-			PRINTFORMDL 그런질문은 답이 생각이 바로 안난단말이지...
+			PRINTFORML 「%마스터는%평소엔 뭘 하고 지내?」
+			PRINTFORMDW 그런질문은 답이 생각이 바로 안난단말이지…
 		CASE 1
 			IF CFLAG:1001 == 0 ;가게 방문X
-				PRINTFORMW 「저번에도 말했지만 집 근처에서 가게를 하고있어♪」
-				PRINTFORMW 「3일간격으로 16시에서 24시까지 여니깐 언제 한번 와줘~」
-				PRINTFORMDL 3일에 한번인가...
+				PRINTFORML 「저번에도 말했지만 집 근처에서 가게를 하고있어♪」
+				PRINTFORML 「3일간격으로 16시에서 24시까지 여니깐 언제 한번 와줘~」
+				PRINTFORMDW 3일에 한번인가…
 			ELSE
 				IF CFLAG:1002 == 0 ;첫회
-					PRINTFORMW 「아! 맞다!」
-					PRINTFORMW 「저번엔 가게에 방문해줘서 고마웠어♪」
-					PRINTFORMW 「내 가게는 어땠어?」
-					CALL ASK_M("좋았어",1,"글쎄...",1)
+					PRINTFORML 「아! 맞다!」
+					PRINTFORML 「저번엔 가게에 방문해줘서 고마웠어♪」
+					PRINTFORML 「내 가게는 어땠어?」
+					CALL ASK_M("좋았어",1,"글쎄…",1)
 						SELECTCASE RESULT
 						CASE 0;긍정
-							PRINTFORML 「그래? 마음에 들어서 다행이네♪」
+							PRINTFORMW 「그래? 마음에 들어서 다행이네♪」
 							CFLAG:2 += 50
 							CFLAG:1002 = 1
 						CASE 1;애매
-							PRINTFORML 「흐음... 그래? 그럼 더 마음에 들도록 노력해야지♪」
-							CFLAG:1002 = 2
+							PRINTFORMW 「흐음… 그래? 그럼 더 마음에 들도록 노력해야지♪」
+							CFLAG:1002 = -1
 						ENDSELECT
 				ELSE ;두번째
-					PRINTFORMW 「가게일이란거 생각보다 힘들단말이지...」
+					PRINTFORML 「가게일이란거 생각보다 힘들단말이지…」
 					PRINTFORMW 「누가 도와준다면 좋겠네~」
 				ENDIF
 			ENDIF
 		CASE 2
-			PRINTFORMW 「%CALLNAME:MASTER%, 뭔가 재밌는 이야기 없어?」
-			PRINTFORML 「취미? 나는 역시 노래일려나♪」
+			PRINTFORML 「%CALLNAME:MASTER%, 뭔가 재밌는 이야기 없어?」
+			PRINTFORMW 「취미? 나는 역시 노래일려나♪」
 		CASE 3
-			PRINTFORMW 「」
+			PRINTFORMDW 미스티아에게 알을 낳냐고 질문해보았다.
+			PRINTFORML 「엣? 알? 알을 낳냐고?」
+			PRINTFORML 「안알려줘…」
+			PRINTFORMDW 미스티아는 얼굴을 붉히며 말했다.
 		CASE 4
-			PRINTFORMW 「」
+			IF CFLAG:1000<=0
+				PRINTFORML 「%마스터가% 어디서든 차를 꺼낼 수 있다는 소문이 있는데…」
+				PRINTFORMW 「정말이야?」
+			ELSE
+				PRINTFORML 「도대체 그 차는 어디에서나오는거야…」
+				PRINTFORML 「게다가 방금탄것처럼 따듯하고…」
+				PRINTFORMW 「%마스터는% 혹시 차의 요괴…?」
+			ENDIF
 		ENDSELECT
 	ENDIF
 ENDIF
