@@ -42,9 +42,10 @@
 
 ;**** FlagManagement **********************************************************
 ;본 구상에서 사용하고 있는 CFLAG · TCVAR 등
-; cflag:1000 차타준 횟수
-; cflag:1001 일하는중 방문한 횟수
-; cflag:1002 일상계 일 관련 회화 전용
+; CFLAG:1000 차타준 횟수
+; CFLAG:1001 일하는중 방문한 횟수
+; CFLAG:1002 일상계 일 관련 회화 전용
+; CFLAG:1204　회화로 사용(연모 후 첫 대화용)
 ;
 ;
 ;******************************************************************************
@@ -1600,8 +1601,18 @@ IF LOCAL
 		PRINTFORML
 		PRINTFORMW %마스터와% 대화가 끝나버리면 가슴 한켠이 아쉬워진다.
 		PRINTFORML
-		PRINTFORMW 「%CALLNAME:MASTER%….」
-		PRINTFORMW 「사람을 」
+		PRINTFORMW 「%CALLNAME:MASTER%…」
+		PRINTFORMW 「난 역시 %마스터를%…」
+		PRINTFORML
+		PRINTFORML 「사랑… 하고있는건가」
+		IF (!TALENT:MASTER:여우 && !TALENT:MASTER:요호 && !TALENT:MASTER:흡혈귀 && !TALENT:MASTER:동물귀)
+			PRINTFORMW 「하지만 나는 요괴인데…」
+		ENDIF
+		PRINTFORMW 「%마스터는%… 나를 어떻게 생각하고있으려나…」
+		PRINTFORMW 「서로 좋아하고있는거면 좋을텐데…」
+		PRINTFORMW 「내일도… 만나러 와주려나♪」
+		PRINTFORMW
+		PRINTFORMW 「……제대로 평범하게 이야기 할 수 있으려나」
 		RETURN 1
 	ENDIF
 	;-------------------------------------------------
@@ -1612,7 +1623,11 @@ IF LOCAL
 	IF LOCAL:1 && ARG == 2
 		PRINTFORMDL 
 		PRINTFORMDL 일과를 마치고 미스티아는 침대에 누웠지만 잠에들지는 못하고있었다.
-		PRINTFORMW 「」
+		PRINTFORML
+		PRINTFORMW 「뭘까 이느낌은…」
+		PRINTFORMW 「%마스터와% 더 친해지고 싶어…」
+		PRINTFORMW 「%마스터와% 더 가까워지고 싶어…」
+		PRINTFORMW 「진짜 뭐지…」
 		RETURN 1
 	ENDIF
 	;-------------------------------------------------

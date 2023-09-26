@@ -37,3 +37,7 @@ W == 브레이크
 등등
 이름호출
  %CALLNAME:MASTER%
+
+ tw바닐라에서
+ IF(!TALENT:MASTER:여우 && !TALENT:MASTER:요호 && !TALENT:MASTER:흡혈귀 && !TALENT:MASTER:동물귀)
+ 이걸로 인간인지 아닌지 판단하나 텍붕에서는 어떨지 몰?루

@@ -36,7 +36,17 @@ IF LOCAL
 	IF FIRSTTIME(SELECTCOM)
 		PRINTFORMW 「나랑 이야기를?」
 		PRINTFORMW 「무슨 이야기가 좋을까♪」
-	ELSEIF TCVAR:302 && TALENT:연모
+	ELSEIF CFLAG:28:빡침 > 0 || TALENT:28:기분 == -1 || MARK:28:반발각인 >= 3
+		PRINTFORML 「……응」
+		PRINTFORMW 미스티아는 차가운 눈으로 이쪽을 힐끗 쳐다보았다…
+	ELSEIF TALENT:연모 && CFLAG:1204 == 0
+		PRINTFORMW 「어, 응… 그래…」
+		PRINTFORMW (전까진 평범하게 이야기했는데)
+		PRINTFORMW (머릿속에 %CALLNAME:MASTER%밖에 떠오르지않아서…)
+		PRINTFORML
+		PRINTFORMW (진정하자 미스티아…)
+		CFLAG:1204 = 1
+	ELSEIF TCVAR:302 && TALENT:연모 || TALENT:연인
 		SELECTCASE RAND:3
 		CASE 0
 			PRINTFORML 「말할거리가 생각안나는거야?」
@@ -69,7 +79,7 @@ IF LOCAL
 			PRINTFORMW (말할 거리 있던가…)
 		ENDSELECT
 	ELSEIF TALENT:연인
-		SELECTCASE RAND:5
+		SELECTCASE RAND:10
 		CASE 0
 			PRINTFORMW 미스티아에게 알을 낳냐고 질문해보았다.
 			IF CFLAG:911 == 1 && EXP:출산경험 <= 0
@@ -92,6 +102,11 @@ IF LOCAL
 		CASE 2
 		CASE 3
 		CASE 4
+		CASE 5
+		CASE 6
+		CASE 7
+		CASE 8
+		CASE 9
 		ENDSELECT
 	ELSEIF TALENT:연모
 		SELECTCASE RAND:5
@@ -140,9 +155,18 @@ IF LOCAL
 				PRINTFORMW 「다 알면서…」
 			ENDIF
 		CASE 3
-			PRINTFORML 「」
+			IF (!TALENT:MASTER:여우 && !TALENT:MASTER:요호 && !TALENT:MASTER:흡혈귀 && !TALENT:MASTER:동물귀)
+				PRINTFORML 「%마스터는% 요괴가 두렵지는 않아?」
+				PRINTFORMW 「아니지 안두려우니깐 이렇게 나랑 이야기하는건가♪」
+			ELSE
+				PRINTFORML 「가끔 가게에 인간이 찾아오더라」
+				PRINTFORMW 「요괴가 두렵지 않은걸까나? 그 무녀처럼」
+			ENDIF
 		CASE 4
-			PRINTFORML 「」
+			PRINTFORML 「저기 %CALLNAME:MASTER% 나 머리 기르면 어울릴려나?」
+			PRINTFORML 「어떨려나♪」
+			CALL ASK_M("지금이 좋아",1,"기르는편도 좋을지도",1,"어느쪽이든 좋아",1)
+			PRINTFORMW 「후훗 고마워♪」
 		ENDSELECT
 	ELSEIF CFLAG:2 >= 750;호감도 높음
 		SELECTCASE RAND:5
@@ -185,8 +209,14 @@ IF LOCAL
 			PRINTFORMW 「또 그 망령이 나를 노리는건가…」
 		CASE 4
 			PRINTFORML 「나는 사실 원래 사람을 공격하는쪽의 요괴지만~」
-			PRINTFORMW 「%마스터와% 이야기하는게 즐거워서 %마스터와%는 친해지고싶네♪」
-			PRINTFORMDW 미스티아는 무서운소리를 아무렇지도 않게 하고있다.
+			IF (!TALENT:MASTER:여우 && !TALENT:MASTER:요호 && !TALENT:MASTER:흡혈귀 && !TALENT:MASTER:동물귀)
+				PRINTFORML 「%마스터와% 이야기하는게 즐거워서 %마스터와%는 친해지고싶네♪」
+				PRINTFORMDW 나 그러면 나중에 먹히는거야?
+				PRINTFORMW 「나는 인간을 잡아먹는쪽이 아니니깐 걱정하지마♪」
+			ELSE
+				PRINTFORMW 「%마스터와% 이야기하는게 즐거워서 지금은 안그래도 될것같아♪」
+				PRINTFORMW 「나는 딱히 인간을 먹는쪽이 아니니깐♪」
+			ENDIF
 		ENDSELECT
 	ELSE
 		SELECTCASE RAND:5;기본
